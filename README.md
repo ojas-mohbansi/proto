@@ -18,6 +18,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-58A6FF?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=0D1117)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-dashboard-00C8FF?style=for-the-badge&logo=next.js&logoColor=white&labelColor=0D1117)](https://nextjs.org)
 
+[![Website](https://img.shields.io/badge/Website-ojas--mohbansi.github.io/proto-58A6FF?style=for-the-badge&logo=github&logoColor=white&labelColor=0D1117)](https://ojas-mohbansi.github.io/proto)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-2EA043?style=for-the-badge&logo=gnu&logoColor=white&labelColor=0D1117)](./LICENSE)
 [![Self-Hosted](https://img.shields.io/badge/Self--Hosted-Local_First-F1C40F?style=for-the-badge&logo=homeassistant&logoColor=white&labelColor=0D1117)](#)
 [![LLM](https://img.shields.io/badge/LLM-Ollama_%7C_OpenAI-58A6FF?style=for-the-badge&logo=openai&logoColor=white&labelColor=0D1117)](#configuration)
@@ -465,7 +466,7 @@ Proto is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)*
 Free to use, modify, and distribute — including self-hosted deployments — as long as any modified version you run over a network is also released under the same license.
 
 ```
-Copyright (C) 2025 Ojas Mohbansi
+Copyright (C) 2026 Ojas Mohbansi
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -493,6 +494,8 @@ GNU Affero General Public License for more details.
 <br/>
 
 [![GitHub](https://img.shields.io/badge/github.com/ojas--mohbansi/proto-0D1117?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ojas-mohbansi/proto)
+&nbsp;
+[![Website](https://img.shields.io/badge/ojas--mohbansi.github.io/proto-0D1117?style=for-the-badge&logo=githubpages&logoColor=white)](https://ojas-mohbansi.github.io/proto)
 
 <br/>
 
