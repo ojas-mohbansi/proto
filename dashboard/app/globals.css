@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Proto brand kit — GitHub dark + electric blue */
+  --background: 222 60% 2%;       /* #010409 graphite black */
+  --foreground: 213 47% 96%;      /* #F0F6FC soft white */
+  --card: 215 28% 6%;             /* #0D1117 deep navy */
+  --card-foreground: 213 47% 96%;
+  --primary: 212 100% 67%;        /* #58A6FF electric blue */
+  --primary-foreground: 215 28% 6%;
+  --secondary: 215 28% 6%;
+  --secondary-foreground: 213 47% 96%;
+  --muted: 213 14% 21%;           /* #30363D slate gray */
+  --muted-foreground: 213 16% 65%;
+  --accent: 192 100% 50%;         /* #00C8FF cyan glow */
+  --accent-foreground: 215 28% 6%;
+  --destructive: 6 78% 57%;       /* #E74C3C crimson */
+  --destructive-foreground: 213 47% 96%;
+  --success: 134 61% 41%;         /* #2EA043 emerald */
+  --warning: 48 89% 53%;          /* #F1C40F amber */
+  --border: 213 14% 21%;
+  --ring: 212 100% 67%;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, hsl(212 100% 67% / 0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, hsl(192 100% 50% / 0.06), transparent 60%),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.01em;
+}
+
+.font-accent {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-mono, code, pre {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}

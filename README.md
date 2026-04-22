@@ -18,7 +18,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-58A6FF?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=0D1117)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-dashboard-00C8FF?style=for-the-badge&logo=next.js&logoColor=white&labelColor=0D1117)](https://nextjs.org)
 
-[![License](https://img.shields.io/badge/License-Open_Source-2EA043?style=for-the-badge&labelColor=0D1117)](./LICENSE)
+[![License](https://img.shields.io/badge/License-AGPL--3.0-2EA043?style=for-the-badge&logo=gnu&logoColor=white&labelColor=0D1117)](./LICENSE)
 [![Self-Hosted](https://img.shields.io/badge/Self--Hosted-Local_First-F1C40F?style=for-the-badge&logo=homeassistant&logoColor=white&labelColor=0D1117)](#)
 [![LLM](https://img.shields.io/badge/LLM-Ollama_%7C_OpenAI-58A6FF?style=for-the-badge&logo=openai&logoColor=white&labelColor=0D1117)](#configuration)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Linux-00C8FF?style=for-the-badge&logo=linux&logoColor=white&labelColor=0D1117)](#)
@@ -62,6 +62,7 @@ Because everything runs on **your hardware**, your data never leaves your machin
 <td>
 
 ### Decompose
+
 Given a long-lived goal, Proto breaks it into an actionable task hierarchy using a **Hierarchical Task Network (HTN) planner**.
 
 </td>
@@ -75,6 +76,7 @@ Given a long-lived goal, Proto breaks it into an actionable task hierarchy using
 <td>
 
 ### Decide
+
 It consults the configured LLM + its own **episodic memory** to pick the next safe, sensible action — steering around moves that failed before.
 
 </td>
@@ -88,6 +90,7 @@ It consults the configured LLM + its own **episodic memory** to pick the next sa
 <td>
 
 ### Execute
+
 Actions run through a **cross-platform sandboxed tool registry** that screens every shell command and file operation before it fires — covering both Windows and POSIX destructive patterns.
 
 </td>
@@ -101,6 +104,7 @@ Actions run through a **cross-platform sandboxed tool registry** that screens ev
 <td>
 
 ### Remember
+
 Outcomes are written to **SQLite** (episodic) and **ChromaDB** (semantic vector store). Proto stops repeating bad decisions because it genuinely remembers them.
 
 </td>
@@ -114,6 +118,7 @@ Outcomes are written to **SQLite** (episodic) and **ChromaDB** (semantic vector 
 <td>
 
 ### Report
+
 A **real-time Next.js dashboard** streams live logs over WebSocket. A **WhatsApp bot** (Baileys) lets you query, steer, pause, or redirect from your phone with `!` commands.
 
 </td>
@@ -127,6 +132,7 @@ A **real-time Next.js dashboard** streams live logs over WebSocket. A **WhatsApp
 <td>
 
 ### Recover
+
 A **watchdog process** monitors the agent's heartbeat. If it goes stale, Proto is restarted within seconds — with exponential back-off.
 
 </td>
@@ -265,11 +271,11 @@ All config lives in **`.env`**. Key variables:
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | |
 | `OPENAI_MODEL` | `gpt-4o-mini` | Used when `LLM_PROVIDER=openai` |
 | `OPENAI_BASE_URL` | `https://api.openai.com/v1` | Any OpenAI-compatible URL |
-| `OPENAI_API_KEY` | _(empty)_ | Required for cloud providers |
+| `OPENAI_API_KEY` | *(empty)* | Required for cloud providers |
 | `AGENT_HOME` | project dir | Base for `memory/`, `state/`, `logs/` |
 | `CHECKPOINT_INTERVAL_SECONDS` | `300` | State persistence frequency |
 | `WATCHDOG_INTERVAL_SECONDS` | `30` | Heartbeat check frequency |
-| `WA_OWNER_NUMBER` | _(empty)_ | `<digits>@s.whatsapp.net` |
+| `WA_OWNER_NUMBER` | *(empty)* | `<digits>@s.whatsapp.net` |
 | `WA_PREFIX` | `!` | Command prefix in WhatsApp |
 
 See [`.env.example`](.env.example) for the full list.
@@ -321,7 +327,7 @@ For the dashboard: `cd dashboard && npm run build && npm run start`
    WA_OWNER_NUMBER=919876543210@s.whatsapp.net
    ```
 
-2. _(Optional)_ Paste a base64 session string into `WA_SESSION_ID` to skip QR pairing.
+2. *(Optional)* Paste a base64 session string into `WA_SESSION_ID` to skip QR pairing.
 
 3. Otherwise: run `node whatsapp/index.js` → scan the QR in WhatsApp → **Linked Devices** → stop and reinstall as service.
 
@@ -390,9 +396,11 @@ proto/
 <summary><strong>Agent not starting</strong></summary>
 
 Confirm Ollama is reachable:
+
 ```bash
 curl http://localhost:11434/api/tags
 ```
+
 Or verify your `OPENAI_API_KEY` is set and valid.
 
 </details>
@@ -416,9 +424,11 @@ Or verify your `OPENAI_API_KEY` is set and valid.
 <summary><strong>Goal injection rejected (409)</strong></summary>
 
 The API returns `409` when the agent heartbeat is fresh. Pause first:
+
 ```
 !pause
 ```
+
 …or stop the service, inject the goal, then restart.
 
 </details>
@@ -445,6 +455,30 @@ Delete the `whatsapp/session/` folder and re-pair via QR.
 | Success | Emerald | `#2EA043` |
 | Warning | Amber | `#F1C40F` |
 | Error | Crimson | `#E74C3C` |
+
+---
+
+## ◈ License
+
+Proto is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+Free to use, modify, and distribute — including self-hosted deployments — as long as any modified version you run over a network is also released under the same license.
+
+```
+Copyright (C) 2025 Ojas Mohbansi
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+```
+
+> Full license text → [`LICENSE`](./LICENSE)
 
 ---
 

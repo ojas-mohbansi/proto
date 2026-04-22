@@ -1,0 +1,16 @@
+{
+  "name": "agent-whatsapp-bot",
+  "version": "1.0.0",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "latest",
+    "@hapi/boom": "^10.0.1",
+    "pino": "^9.5.0",
+    "node-fetch": "^2.7.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
