@@ -13,10 +13,11 @@
 <meta name="robots" content="index, follow"/>
 <meta name="author" content="ojas-mohbansi"/>
 
-<meta property="og:image" content="assets/proto-hero.png"/>
+<meta property="og:image" content="https://ojas-mohbansi.github.io/proto/assets/proto-hero.png"/>
 <meta property="og:image:width" content="1920"/>
 <meta property="og:image:height" content="1080"/>
-<meta name="twitter:image" content="assets/proto-hero.png"/>
+<meta property="og:image:type" content="image/png"/>
+<meta name="twitter:image" content="https://ojas-mohbansi.github.io/proto/assets/proto-hero.png"/>
 <!-- ── Open Graph ── -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://ojas-mohbansi.github.io/proto/"/>
@@ -538,7 +539,21 @@ a:hover { color: var(--primary); }
 .tw-blank { display: block; height: 32px; }
 
 /* ── FOOTER ── */
-footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,5vw,80px); border-top: 1px solid var(--border); }
+footer {
+  position: relative;
+  color: var(--fg);
+  padding: 60px clamp(20px,5vw,80px);
+  border-top: 1px solid var(--border);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(1,4,9,0.88) 0%,
+      rgba(1,4,9,0.82) 60%,
+      rgba(1,4,9,0.93) 100%
+    ),
+    url("assets/proto-hero.png") center/cover no-repeat;
+  overflow: hidden;
+}
 .footer-quote { font-family: var(--f-display); font-size: clamp(1.3rem,2.8vw,2.2rem); font-weight: 700; font-style: italic; color: rgba(240,246,252,0.8); line-height: 1.25; letter-spacing: -0.02em; max-width: 520px; padding-bottom: 44px; margin-bottom: 44px; border-bottom: 1px solid var(--border); }
 .footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: end; }
 @media (min-width: 640px) { .footer-inner { grid-template-columns: 1fr auto; } }
