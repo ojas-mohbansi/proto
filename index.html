@@ -13,6 +13,10 @@
 <meta name="robots" content="index, follow"/>
 <meta name="author" content="ojas-mohbansi"/>
 
+<meta property="og:image" content="assets/proto-hero.png"/>
+<meta property="og:image:width" content="1920"/>
+<meta property="og:image:height" content="1080"/>
+<meta name="twitter:image" content="assets/proto-hero.png"/>
 <!-- ── Open Graph ── -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://ojas-mohbansi.github.io/proto/"/>
@@ -204,8 +208,19 @@ a:hover { color: var(--primary); }
   border-bottom: 1px solid var(--border);
   transition: box-shadow 0.3s;
 }
-.nav-wordmark { font-family: var(--f-display); font-size: 1.1rem; font-weight: 700; letter-spacing: -0.03em; text-decoration: none; color: var(--fg); }
-.nav-wordmark span { color: var(--primary); }
+.nav-wordmark {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+.nav-wordmark img {
+  height: 28px;
+  width: auto;
+  /* black bg becomes invisible on dark surface via screen blend */
+  mix-blend-mode: screen;
+  display: block;
+}
 .nav-links { display: flex; gap: clamp(12px, 2.5vw, 36px); list-style: none; align-items: center; }
 .nav-links a { font-family: var(--f-body); font-size: 0.78rem; font-style: italic; color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--fg); }
@@ -225,7 +240,6 @@ a:hover { color: var(--primary); }
   overflow: hidden;
 }
 @media (min-width: 860px) {
-  /* Give text a flexible column and the figure a generous explicit track */
   .hero { grid-template-columns: minmax(0, 1fr) minmax(380px, 48vw); gap: clamp(32px, 4vw, 64px); }
 }
 @media (min-width: 1280px) {
@@ -234,12 +248,32 @@ a:hover { color: var(--primary); }
 @media (min-width: 1600px) {
   .hero { grid-template-columns: minmax(0, 1fr) minmax(600px, 50vw); }
 }
-.hero::before {
-  content: 'P';
-  position: absolute; top: -0.12em; right: -0.04em;
-  font-family: var(--f-display); font-size: clamp(200px, 32vw, 520px);
-  font-weight: 900; color: transparent; -webkit-text-stroke: 1px var(--border);
-  pointer-events: none; line-height: 1; z-index: 0; opacity: 0.35;
+/* Hero background image */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  opacity: 0.28;
+}
+/* Gradient overlay — left side nearly opaque so text stays sharp */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    var(--bg) 0%,
+    var(--bg) 30%,
+    rgba(1,4,9,0.75) 55%,
+    rgba(1,4,9,0.2) 100%
+  );
 }
 .hero-text { position: relative; z-index: 1; max-width: 640px; }
 .hero-annotation {
@@ -508,8 +542,13 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
 .footer-quote { font-family: var(--f-display); font-size: clamp(1.3rem,2.8vw,2.2rem); font-weight: 700; font-style: italic; color: rgba(240,246,252,0.8); line-height: 1.25; letter-spacing: -0.02em; max-width: 520px; padding-bottom: 44px; margin-bottom: 44px; border-bottom: 1px solid var(--border); }
 .footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: end; }
 @media (min-width: 640px) { .footer-inner { grid-template-columns: 1fr auto; } }
-.footer-logo { font-family: var(--f-display); font-size: 2.6rem; font-weight: 900; letter-spacing: -0.04em; color: rgba(240,246,252,0.9); line-height: 1; }
-.footer-logo span { color: var(--primary); }
+.footer-logo { line-height: 1; }
+.footer-logo img {
+  height: 36px;
+  width: auto;
+  mix-blend-mode: screen;
+  display: block;
+}
 .footer-sub { font-family: var(--f-body); font-size: 0.85rem; font-style: italic; color: rgba(240,246,252,0.65); margin-top: 8px; }
 .footer-links { list-style: none; display: flex; flex-direction: row; flex-wrap: wrap; gap: 14px 24px; }
 @media (min-width: 640px) { .footer-links { flex-direction: column; gap: 11px; text-align: right; } }
@@ -540,7 +579,9 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
 <body>
 
 <nav class="nav">
-  <a class="nav-wordmark" href="/">proto<span>.</span></a>
+  <a class="nav-wordmark" href="/" aria-label="Proto — home">
+    <img src="assets/proto-wordmark.png" alt="Proto" width="140" height="28">
+  </a>
   <ul class="nav-links">
     <li><a href="#how">Process</a></li>
     <li><a href="#caps">Capabilities</a></li>
@@ -552,6 +593,11 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
 
 <!-- ═══════════ HERO ═══════════ -->
 <header class="hero">
+
+  <!-- Background image with overlay -->
+  <div class="hero-bg" aria-hidden="true">
+    <img src="assets/proto-hero.png" alt="" width="1920" height="1080" fetchpriority="high">
+  </div>
 
   <div class="hero-text">
     <p class="hero-annotation">Open-source proactive agent &nbsp;·&nbsp; prototype</p>
@@ -1252,7 +1298,9 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
   <p class="footer-quote">"The best interface is one that anticipates before it responds."</p>
   <div class="footer-inner">
     <div>
-      <div class="footer-logo">proto<span>.</span></div>
+      <div class="footer-logo">
+        <img src="assets/proto-wordmark.png" alt="Proto" width="180" height="36">
+      </div>
       <p class="footer-sub">A proactive agent prototype by ojas-mohbansi</p>
     </div>
     <ul class="footer-links">
