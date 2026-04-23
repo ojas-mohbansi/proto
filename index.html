@@ -141,8 +141,12 @@
 }
 </script>
 
+<!-- Preconnect to both font origins so TCP/TLS handshakes are already done -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Load the stylesheet asynchronously (print→all swap trick eliminates render-blocking) -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap"></noscript>
 <style>
 :root {
   --bg:       #010409;
@@ -221,7 +225,14 @@ a:hover { color: var(--primary); }
   overflow: hidden;
 }
 @media (min-width: 860px) {
-  .hero { grid-template-columns: 1fr auto; gap: 40px; }
+  /* Give text a flexible column and the figure a generous explicit track */
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(380px, 48vw); gap: clamp(32px, 4vw, 64px); }
+}
+@media (min-width: 1280px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(500px, 52vw); }
+}
+@media (min-width: 1600px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(600px, 50vw); }
 }
 .hero::before {
   content: 'P';
@@ -232,7 +243,7 @@ a:hover { color: var(--primary); }
 }
 .hero-text { position: relative; z-index: 1; max-width: 640px; }
 .hero-annotation {
-  font-family: var(--f-body); font-size: 0.77rem; font-style: italic; color: var(--fg-dim);
+  font-family: var(--f-body); font-size: 0.77rem; font-style: italic; color: #7D8590;
   margin-bottom: 22px; display: flex; align-items: center; gap: 12px;
 }
 .hero-annotation::before { content: ''; display: block; width: 30px; height: 1px; background: var(--primary); flex-shrink: 0; }
@@ -266,23 +277,18 @@ a:hover { color: var(--primary); }
 .btn-ghost { font-family: var(--f-body); font-size: 0.82rem; font-style: italic; color: var(--fg-muted); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 4px; transition: color 0.2s; }
 .btn-ghost:hover { color: var(--fg); }
 .hero-facts { display: flex; gap: clamp(20px, 4vw, 36px); flex-wrap: wrap; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); }
-.hero-fact { font-family: var(--f-mono); font-size: 0.64rem; color: var(--fg-dim); letter-spacing: 0.07em; text-transform: uppercase; line-height: 1.4; }
+.hero-fact { font-family: var(--f-mono); font-size: 0.64rem; color: #7D8590; letter-spacing: 0.07em; text-transform: uppercase; line-height: 1.4; }
 .hero-fact strong { display: block; font-family: var(--f-display); font-size: 1.3rem; font-weight: 700; color: var(--fg); letter-spacing: -0.03em; line-height: 1; }
 .hero-illustration {
   position: relative; z-index: 1;
   opacity: 0; transform: translateY(14px); animation: rise 1s ease 0.45s both;
   width: 100%;
-  /* Fluid: grows from 280px on small screens up to 360px, then shrinks
-     proportionally on wide viewports so it never dominates the hero */
-  max-width: clamp(280px, 42vw, 360px);
+  /* Mobile: full width up to a comfortable cap */
+  max-width: min(100%, 520px);
 }
 @media (min-width: 860px) {
-  /* On desktop the hero is two-column; cap the illustration
-     so it stays balanced against the text column */
-  .hero-illustration { max-width: clamp(240px, 28vw, 340px); }
-}
-@media (min-width: 1200px) {
-  .hero-illustration { max-width: 300px; }
+  /* Desktop: fill the column track — width:100% against the grid track is enough */
+  .hero-illustration { max-width: 100%; align-self: center; }
 }
 @keyframes rise { to { opacity: 1; transform: none; } }
 
@@ -479,7 +485,7 @@ a:hover { color: var(--primary); }
 .install-note { padding: 20px 24px; background: var(--bg); border-left: 3px solid var(--border); }
 .install-note.r { border-left-color: var(--primary); }
 .install-note.b { border-left-color: var(--accent); }
-.install-note h4 { font-family: var(--f-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--fg); }
+.install-note h3 { font-family: var(--f-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--fg); }
 .install-note p { font-size: 0.82rem; color: var(--fg-muted); line-height: 1.75; }
 .typewriter-card { background: var(--bg); border: 1px solid var(--border); position: relative; }
 .typewriter-card::before {
@@ -504,12 +510,12 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
 @media (min-width: 640px) { .footer-inner { grid-template-columns: 1fr auto; } }
 .footer-logo { font-family: var(--f-display); font-size: 2.6rem; font-weight: 900; letter-spacing: -0.04em; color: rgba(240,246,252,0.9); line-height: 1; }
 .footer-logo span { color: var(--primary); }
-.footer-sub { font-family: var(--f-body); font-size: 0.85rem; font-style: italic; color: rgba(240,246,252,0.4); margin-top: 8px; }
+.footer-sub { font-family: var(--f-body); font-size: 0.85rem; font-style: italic; color: rgba(240,246,252,0.65); margin-top: 8px; }
 .footer-links { list-style: none; display: flex; flex-direction: row; flex-wrap: wrap; gap: 14px 24px; }
 @media (min-width: 640px) { .footer-links { flex-direction: column; gap: 11px; text-align: right; } }
-.footer-links a { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(240,246,252,0.45); text-decoration: none; transition: color 0.2s; }
+.footer-links a { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(240,246,252,0.7); text-decoration: none; transition: color 0.2s; }
 .footer-links a:hover { color: rgba(240,246,252,0.9); }
-.footer-copy { font-family: var(--f-mono); font-size: 0.6rem; color: rgba(240,246,252,0.22); letter-spacing: 0.06em; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 26px; }
+.footer-copy { font-family: var(--f-mono); font-size: 0.6rem; color: rgba(240,246,252,0.5); letter-spacing: 0.06em; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 26px; }
 
 /* ── REVEAL ── */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -577,126 +583,137 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
     updated to match the new leaf positions.
   -->
   <div class="hero-illustration" aria-hidden="true">
-    <svg width="100%" viewBox="0 0 360 390" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="100%" viewBox="0 0 380 390" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- Card shadow -->
-      <rect x="9" y="9" width="348" height="378" rx="2" fill="var(--border)"/>
+      <rect x="9" y="9" width="366" height="378" rx="2" fill="var(--border)"/>
       <!-- Card body -->
-      <rect x="2" y="2" width="348" height="378" rx="2" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+      <rect x="2" y="2" width="374" height="384" rx="2" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
 
-      <!-- Ruled lines (every 28px, starting y=48) -->
-      <line x1="18" y1="48"  x2="334" y2="48"  stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="76"  x2="334" y2="76"  stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="104" x2="334" y2="104" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="132" x2="334" y2="132" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="160" x2="334" y2="160" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="188" x2="334" y2="188" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="216" x2="334" y2="216" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="244" x2="334" y2="244" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="272" x2="334" y2="272" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="300" x2="334" y2="300" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="328" x2="334" y2="328" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
-      <line x1="18" y1="356" x2="334" y2="356" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <!-- Ruled lines (every 28px, x=18→360) -->
+      <line x1="18" y1="48"  x2="360" y2="48"  stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="76"  x2="360" y2="76"  stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="104" x2="360" y2="104" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="132" x2="360" y2="132" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="160" x2="360" y2="160" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="188" x2="360" y2="188" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="216" x2="360" y2="216" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="244" x2="360" y2="244" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="272" x2="360" y2="272" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="300" x2="360" y2="300" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="328" x2="360" y2="328" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
+      <line x1="18" y1="356" x2="360" y2="356" stroke="var(--border)" stroke-width="0.55" opacity="0.7"/>
 
       <!-- Blue margin rule -->
-      <line x1="50" y1="0" x2="50" y2="382" stroke="rgba(88,166,255,0.18)" stroke-width="1"/>
+      <line x1="50" y1="0" x2="50" y2="384" stroke="rgba(88,166,255,0.18)" stroke-width="1"/>
 
-      <!-- ── GOAL root box (center x=180) ── -->
+      <!-- ─────────────────────────────────────────────────────────
+           Layout grid (all centered on cx=190):
+           GOAL:        cx=190  (x=149–231, w=82)
+           TASKS row:   fetch_data cx=79  (x=30–128, w=98)
+                        analyse    cx=190 (x=141–239, w=98)
+                        notify     cx=301 (x=252–350, w=98)
+           ACTIONS row: query_db   cx=59  (x=20–98,  w=78)
+                        llm_sum    cx=150 (x=108–192, w=84)
+                        whatsapp   cx=240 (x=202–278, w=76)
+                        dashboard  cx=325 (x=288–362, w=74)
+                        gaps between actions = 10px each
+      ───────────────────────────────────────────────────────── -->
+
+      <!-- ── GOAL root box (cx=190) ── -->
       <g class="fn" style="transition-delay:0.3s">
-        <path d="M142 14 Q144 12 218 12 Q221 12 221 15 L221 29 Q221 32 218 32 L144 32 Q142 32 142 29 Z"
+        <path d="M151 14 Q153 12 229 12 Q232 12 231 15 L231 29 Q231 32 228 32 L152 32 Q150 32 151 29 Z"
               fill="rgba(88,166,255,0.12)" stroke="var(--primary)" stroke-width="1.4" stroke-linecap="round"/>
-        <text x="181" y="25" text-anchor="middle" font-family="Courier Prime,monospace" font-size="10"
+        <text x="190" y="25" text-anchor="middle" font-family="Courier Prime,monospace" font-size="10"
               fill="var(--primary)" font-weight="700">GOAL</text>
       </g>
 
-      <!-- Trunk: GOAL → branch point -->
-      <path class="d2" d="M181 32 C181 44,181 52,181 62"
+      <!-- Trunk: GOAL → branch point y=62 -->
+      <path class="d2" d="M190 32 L190 62"
             stroke="var(--fg)" stroke-width="1.4" stroke-linecap="round" style="transition-delay:0.5s"/>
 
-      <!-- Branch → fetch_data (center x=80) -->
-      <path class="d2" d="M181 62 C181 62,80 62,80 74"
+      <!-- Branches to three tasks -->
+      <path class="d2" d="M190 62 C190 62,79 62,79 74"
             stroke="var(--fg)" stroke-width="1.4" stroke-linecap="round" style="transition-delay:0.58s"/>
-      <!-- Branch → analyse (center x=170, slight curve) -->
-      <path class="d2" d="M181 62 C181 64,170 68,170 74"
+      <path class="d2" d="M190 62 C190 64,190 68,190 74"
             stroke="var(--fg)" stroke-width="1.4" stroke-linecap="round" style="transition-delay:0.64s"/>
-      <!-- Branch → notify (center x=285) -->
-      <path class="d2" d="M181 62 C181 62,285 62,285 74"
+      <path class="d2" d="M190 62 C190 62,301 62,301 74"
             stroke="var(--fg)" stroke-width="1.4" stroke-linecap="round" style="transition-delay:0.70s"/>
 
-      <!-- ── TASK: fetch_data (x=38–122, center=80) ── -->
+      <!-- ── TASK: fetch_data (x=30–128, cx=79) ── -->
       <g class="fn" style="transition-delay:0.72s">
-        <path d="M38 74 Q40 72 122 72 Q125 72 124 75 L124 89 Q124 92 121 92 L40 92 Q38 92 38 89 Z"
+        <path d="M31 74 Q33 72 127 72 Q130 72 129 75 L129 89 Q129 92 126 92 L32 92 Q30 92 31 89 Z"
               fill="rgba(0,200,255,0.08)" stroke="var(--accent)" stroke-width="1.1" stroke-linecap="round"/>
-        <text x="80" y="84" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="79" y="84" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="9" fill="var(--accent)">fetch_data</text>
       </g>
 
-      <!-- ── TASK: analyse (x=128–212, center=170) ── -->
+      <!-- ── TASK: analyse (x=141–239, cx=190) ── -->
       <g class="fn" style="transition-delay:0.80s">
-        <path d="M128 74 Q130 72 212 72 Q215 72 214 75 L214 89 Q214 92 211 92 L130 92 Q128 92 128 89 Z"
+        <path d="M142 74 Q144 72 238 72 Q241 72 240 75 L240 89 Q240 92 237 92 L143 92 Q141 92 142 89 Z"
               fill="rgba(0,200,255,0.08)" stroke="var(--accent)" stroke-width="1.1" stroke-linecap="round"/>
-        <text x="170" y="84" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="190" y="84" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="9" fill="var(--accent)">analyse</text>
       </g>
 
-      <!-- ── TASK: notify (x=244–326, center=285) ── -->
+      <!-- ── TASK: notify (x=252–350, cx=301) ── -->
       <g class="fn" style="transition-delay:0.88s">
-        <path d="M244 74 Q246 72 326 72 Q329 72 328 75 L328 89 Q328 92 325 92 L246 92 Q244 92 244 89 Z"
+        <path d="M253 74 Q255 72 349 72 Q352 72 351 75 L351 89 Q351 92 348 92 L254 92 Q252 92 253 89 Z"
               fill="rgba(0,200,255,0.08)" stroke="var(--accent)" stroke-width="1.1" stroke-linecap="round"/>
-        <text x="285" y="84" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="301" y="84" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="9" fill="var(--accent)">notify</text>
       </g>
 
-      <!-- ── Sub-lines (dashed) task → action ── -->
-      <!-- fetch_data → query_db -->
-      <path class="d2" d="M80 92 C80 104,78 110,78 118"
+      <!-- ── Sub-lines (dashed): task → action ── -->
+      <!-- fetch_data(79) → query_db(59) -->
+      <path class="d2" d="M79 92 C77 104,63 110,59 118"
             stroke="var(--fg-dim)" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3,3" style="transition-delay:0.94s"/>
-      <!-- analyse → llm_summarise -->
-      <path class="d2" d="M170 92 C170 104,170 110,170 118"
+      <!-- analyse(190) → llm_summarise(150) -->
+      <path class="d2" d="M190 92 C186 104,155 110,150 118"
             stroke="var(--fg-dim)" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3,3" style="transition-delay:0.98s"/>
-      <!-- notify → whatsapp (center x=253) -->
-      <path class="d2" d="M285 92 C280 104,264 110,253 118"
+      <!-- notify(301) → whatsapp(240) -->
+      <path class="d2" d="M301 92 C296 104,248 110,240 118"
             stroke="var(--fg-dim)" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3,3" style="transition-delay:1.02s"/>
-      <!-- notify → dashboard (center x=316) -->
-      <path class="d2" d="M285 92 C289 104,312 110,316 118"
+      <!-- notify(301) → dashboard(325) -->
+      <path class="d2" d="M301 92 C305 104,322 110,325 118"
             stroke="var(--fg-dim)" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3,3" style="transition-delay:1.02s"/>
 
-      <!-- ── ACTION NODES (y=118–133), no overlaps ── -->
+      <!-- ── ACTION NODES (y=118–134) — uniform gaps of 10px ── -->
 
-      <!-- query_db (7d): x=22–134, center=78 -->
+      <!-- query_db (7d): x=20–98, cx=59, w=78 -->
       <g class="fn" style="transition-delay:1.06s">
-        <path d="M22 118 Q24 116 134 116 Q137 116 136 119 L136 131 Q136 134 133 134 L24 134 Q22 134 22 131 Z"
+        <path d="M21 118 Q23 116 97 116 Q100 116 99 119 L99 131 Q99 134 96 134 L22 134 Q20 134 21 131 Z"
               fill="rgba(240,246,252,0.04)" stroke="var(--fg-dim)" stroke-width="0.9"/>
-        <text x="78" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="59" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="8.5" fill="var(--fg-muted)">query_db (7d)</text>
       </g>
 
-      <!-- llm_summarise: x=138–202, center=170 -->
+      <!-- llm_summarise: x=108–192, cx=150, w=84 -->
       <g class="fn" style="transition-delay:1.13s">
-        <path d="M138 118 Q140 116 202 116 Q205 116 204 119 L204 131 Q204 134 201 134 L140 134 Q138 134 138 131 Z"
+        <path d="M109 118 Q111 116 191 116 Q194 116 193 119 L193 131 Q193 134 190 134 L110 134 Q108 134 109 131 Z"
               fill="rgba(240,246,252,0.04)" stroke="var(--fg-dim)" stroke-width="0.9"/>
-        <text x="170" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="150" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="8.5" fill="var(--fg-muted)">llm_summarise</text>
       </g>
 
-      <!-- whatsapp: x=208–298, center=253 -->
+      <!-- whatsapp: x=202–278, cx=240, w=76 -->
       <g class="fn" style="transition-delay:1.19s">
-        <path d="M208 118 Q210 116 298 116 Q301 116 300 119 L300 131 Q300 134 297 134 L210 134 Q208 134 208 131 Z"
+        <path d="M203 118 Q205 116 277 116 Q280 116 279 119 L279 131 Q279 134 276 134 L204 134 Q202 134 203 131 Z"
               fill="rgba(240,246,252,0.04)" stroke="var(--fg-dim)" stroke-width="0.9"/>
-        <text x="253" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="240" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="8.5" fill="var(--fg-muted)">whatsapp</text>
       </g>
 
-      <!-- dashboard: x=302–350, center=326 -->
+      <!-- dashboard: x=288–362, cx=325, w=74 -->
       <g class="fn" style="transition-delay:1.24s">
-        <path d="M302 118 Q304 116 350 116 Q353 116 352 119 L352 131 Q352 134 349 134 L304 134 Q302 134 302 131 Z"
+        <path d="M289 118 Q291 116 361 116 Q364 116 363 119 L363 131 Q363 134 360 134 L290 134 Q288 134 289 131 Z"
               fill="rgba(240,246,252,0.04)" stroke="var(--fg-dim)" stroke-width="0.9"/>
-        <text x="326" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
+        <text x="325" y="128" text-anchor="middle" font-family="Courier Prime,monospace"
               font-size="8.5" fill="var(--fg-muted)">dashboard</text>
       </g>
 
-      <!-- Red/primary annotation: memory consulted (from llm_summarise) -->
+      <!-- memory consulted: from llm_summarise (cx=150, y=134) -->
       <g class="fn" style="transition-delay:1.36s">
-        <path d="M170 134 C163 152,56 162,48 175"
+        <path d="M150 134 C143 152,56 162,48 175"
               stroke="var(--primary)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
         <path d="M48 175 L42 169 M48 175 L54 169"
               stroke="var(--primary)" stroke-width="0.9" stroke-linecap="round"/>
@@ -704,27 +721,27 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
         <text x="18" y="201" font-family="Lora,serif" font-size="8.5" fill="var(--primary)" font-style="italic">consulted →</text>
       </g>
 
-      <!-- Warning annotation: sandboxed (from whatsapp) -->
+      <!-- sandboxed: from whatsapp (cx=240, y=134) -->
       <g class="fn" style="transition-delay:1.43s">
-        <path d="M253 134 C258 150,272 160,277 172"
+        <path d="M240 134 C242 150,246 160,248 172"
               stroke="var(--warning)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
-        <path d="M277 172 L271 167 M277 172 L280 165"
+        <path d="M248 172 L242 167 M248 172 L251 165"
               stroke="var(--warning)" stroke-width="0.9" stroke-linecap="round"/>
-        <text x="272" y="186" font-family="Lora,serif" font-size="8.5" fill="var(--warning)" font-style="italic">sandboxed</text>
+        <text x="244" y="186" font-family="Lora,serif" font-size="8.5" fill="var(--warning)" font-style="italic">sandboxed</text>
       </g>
 
       <!-- Outcome notes -->
       <g class="fn" style="transition-delay:1.55s">
-        <text x="54" y="234" font-family="Courier Prime,monospace" font-size="9" fill="var(--fg-dim)">→ outcome logged to memory</text>
-        <text x="54" y="249" font-family="Courier Prime,monospace" font-size="9" fill="var(--fg-dim)">→ plan marked: success</text>
-        <text x="54" y="264" font-family="Courier Prime,monospace" font-size="9" fill="var(--fg-dim)">→ watchdog: idle</text>
+        <text x="60" y="234" font-family="Courier Prime,monospace" font-size="9" fill="var(--fg-dim)">→ outcome logged to memory</text>
+        <text x="60" y="249" font-family="Courier Prime,monospace" font-size="9" fill="var(--fg-dim)">→ plan marked: success</text>
+        <text x="60" y="264" font-family="Courier Prime,monospace" font-size="9" fill="var(--fg-dim)">→ watchdog: idle</text>
       </g>
 
       <!-- Italic note -->
       <g class="fn" style="transition-delay:1.65s">
-        <text x="54" y="294" font-family="Lora,serif" font-size="9" font-style="italic" fill="var(--fg-dim)">goals decompose recursively until</text>
-        <text x="54" y="307" font-family="Lora,serif" font-size="9" font-style="italic" fill="var(--fg-dim)">all leaves are primitive actions</text>
-        <line x1="54" y1="312" x2="306" y2="312" stroke="var(--border)" stroke-width="0.7"/>
+        <text x="60" y="294" font-family="Lora,serif" font-size="9" font-style="italic" fill="var(--fg-dim)">goals decompose recursively until</text>
+        <text x="60" y="307" font-family="Lora,serif" font-size="9" font-style="italic" fill="var(--fg-dim)">all leaves are primitive actions</text>
+        <line x1="60" y1="312" x2="320" y2="312" stroke="var(--border)" stroke-width="0.7"/>
       </g>
 
       <!-- Caption -->
@@ -736,6 +753,7 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
 
 </header>
 
+<main id="main-content">
 
 <!-- ═══════════ MANIFESTO ═══════════ -->
 <section class="manifesto" aria-labelledby="manifesto-h">
@@ -1162,15 +1180,15 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
 
     <div class="install-notes stagger">
       <div class="install-note r">
-        <h4>Local with Ollama</h4>
+        <h3>Local with Ollama</h3>
         <p>Leave <code style="font-family:var(--f-mono);font-size:0.85em">OPENAI_BASE_URL</code> pointing at your Ollama instance. Nothing leaves your machine. Works with Llama&nbsp;3, Mistral, Gemma, Qwen, and anything Ollama supports.</p>
       </div>
       <div class="install-note b">
-        <h4>Any cloud API</h4>
+        <h3>Any cloud API</h3>
         <p>Set <code style="font-family:var(--f-mono);font-size:0.85em">OPENAI_BASE_URL</code> and <code style="font-family:var(--f-mono);font-size:0.85em">OPENAI_API_KEY</code> in <code style="font-family:var(--f-mono);font-size:0.85em">.env</code> to route to OpenAI, Groq, Together, Mistral, or any compatible endpoint.</p>
       </div>
       <div class="install-note">
-        <h4>WhatsApp (optional)</h4>
+        <h3>WhatsApp (optional)</h3>
         <p>Add your WhatsApp credentials to receive goal-completion summaries on your phone. Useful for long-running or overnight tasks. Full instructions in the README.</p>
       </div>
       <div style="padding:16px 0; border-top:1px solid var(--border);">
@@ -1183,6 +1201,7 @@ footer { background: var(--surface); color: var(--fg); padding: 60px clamp(20px,
   </div>
 </section>
 
+</main>
 
 <!-- ═══════════ GEO: AI-READABLE SUMMARY ═══════════
      This section is visually hidden but fully accessible to crawlers
